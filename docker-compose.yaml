@@ -18,3 +18,13 @@ services:
       - ./conf/redis.conf:/etc/redis/redis.conf
     env_file:
     - .env
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgre:/var/lib/postgresql/data
+    env_file: 
+    - .env
