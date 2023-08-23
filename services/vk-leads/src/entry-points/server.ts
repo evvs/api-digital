@@ -1,4 +1,5 @@
 import express from 'express';
+import { createClient } from 'redis';
 import dotenv from 'dotenv';
 import { Server } from 'http';
 import { AddressInfo } from 'net';
@@ -47,4 +48,22 @@ export const startWebServer = async (): Promise<AddressInfo> => {
   // defineErrorHandlingMiddleware(expressApp);
   const APIAddress = await openConnection(expressApp);
   return APIAddress;
+};
+
+export const client = createClient();
+
+
+export const connectRedis = async () => {
+  try {
+
+    client.on('error', (err) => console.log('Redis Client Error', err));
+
+    await client.connect();
+
+    // await client.auth({
+    //   password: process.env.REDIS_PASSWORD ?? '',
+    // });
+  } catch (error) {
+    throw new Error('REDIS CONNECTION ERROR!');
+  }
 };
