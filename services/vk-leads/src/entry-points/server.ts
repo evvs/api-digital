@@ -52,14 +52,11 @@ export const startWebServer = async (): Promise<AddressInfo> => {
 
 export const client = createClient();
 
-
 export const connectRedis = async () => {
   try {
-
     client.on('error', (err) => console.log('Redis Client Error', err));
 
     await client.connect();
-
     // await client.auth({
     //   password: process.env.REDIS_PASSWORD ?? '',
     // });

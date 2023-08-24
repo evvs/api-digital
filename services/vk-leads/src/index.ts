@@ -9,8 +9,11 @@ const start = async () => {
 start()
   .then((startResponses: AddressInfo) => {
     logger.info(`The vk leads has started successfully ${startResponses.address}${startResponses.port}`);
-    getLeadForms();
   })
+  .then(() => {
+    return getLeadForms();
+  })
+  .then((data) => console.log(data))
   .catch((error) => {
     logger.error(error);
   });
