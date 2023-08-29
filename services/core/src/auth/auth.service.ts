@@ -42,7 +42,7 @@ export class AuthService {
           secret: process.env.ACCESS_TOKEN_SECRET,
           expiresIn: '86400s',
         }),
-        token_type: 'bearer',
+        token_type: 'Bearer',
         expires_in: 86400,
       };
     } catch (error) {

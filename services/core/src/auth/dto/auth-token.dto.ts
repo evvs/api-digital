@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class AuthTokenDto {
   @ApiProperty({
     description: 'User',
-    example: 'zvezda',
+    example: 'fc_rivals',
   })
   @IsNotEmpty()
   @IsString()

@@ -11,7 +11,6 @@ import { Request, Response } from 'express';
 @Catch(UnauthorizedException)
 export class JwtExpirationFilter implements ExceptionFilter {
   catch(exception: UnauthorizedException, host: ArgumentsHost) {
-    console.log('JWT Exception:', exception.message);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();

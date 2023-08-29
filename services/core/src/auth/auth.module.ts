@@ -4,6 +4,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
+import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { AuthController } from './auth.controller';
     JwtModule.register({
       secret: process.env.ACCESS_TOKEN_SECRET,
     }),
+    RedisModule,
   ],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],
