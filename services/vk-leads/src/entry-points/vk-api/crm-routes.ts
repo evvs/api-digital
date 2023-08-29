@@ -1,0 +1,1 @@
+export const crmRoute = 'http://sup9crm02/fczenit/api/data/v9.1'
