@@ -12,6 +12,7 @@ import { AuthTokenOkResponseDto } from './dto/auth-token-ok-response.dto';
 import { RefreshTokenOkResponseDto } from './dto/refresh-token-ok-response.dto';
 import { RedisService } from 'src/redis/redis.service';
 import { BlacklistDto } from './dto/blacklist.dto';
+import { BlacklistOkResponseDto } from './dto/blacklist-ok-response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -48,6 +49,13 @@ export class AuthController {
     return this.authService.refreshAccessToken(refreshTokenDto.refresh_token);
   }
 
+  @ApiExtraModels(BlacklistOkResponseDto)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      $ref: getSchemaPath(BlacklistOkResponseDto),
+    },
+  })
   @Post('blacklist')
   @ApiTags('Auth')
   @HttpCode(200)
