@@ -1,19 +1,28 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthTokenDto } from './dto/auth-token.dto';
+import { RedisService } from 'src/redis/redis.service';
+import { BlacklistDto } from './dto/blacklist.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private redisService: RedisService,
+    private usersService: UsersService,
+  ) {}
 
-  async login(user: AuthTokenDto) {
-    // Check hardcoded credentials
-    if (user.user !== 'zenit' || user.password !== '2bgjSQ3u6IRwyfs') {
-      // example before db implementation
+  private async validateUser(user: string, password: string): Promise<void> {
+    const isValid = await this.usersService.validateUser(user, password);
+    if (!isValid) {
       throw new UnauthorizedException('Invalid username or password');
     }
+  }
 
-    // If credentials match, generate JWT tokens
+  async login(user: AuthTokenDto) {
+    await this.validateUser(user.user, user.password);
+
     const payload = { username: user.user };
 
     return {
@@ -24,7 +33,7 @@ export class AuthService {
       refresh_token: this.jwtService.sign(payload, {
         secret: process.env.REFRESH_TOKEN_SECRET,
       }),
-      token_type: 'bearer',
+      token_type: 'Bearer',
       expires_in: 86400,
     };
   }
@@ -48,5 +57,11 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException('Invalid refresh token');
     }
+  }
+
+  async addToBlackList(blacklistDto: BlacklistDto) {
+    await this.validateUser(blacklistDto.user, blacklistDto.password);
+    await this.redisService.addToBlacklist(blacklistDto.token);
+    return { status: 'success', message: 'Token blacklisted successfully' };
   }
 }

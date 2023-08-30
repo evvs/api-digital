@@ -26,9 +26,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'error', 'warn'],
   });
+
   app.useGlobalFilters(new JwtExpirationFilter());
 
   app.use(helmet());
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

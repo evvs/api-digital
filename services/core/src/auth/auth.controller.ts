@@ -11,6 +11,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { AuthTokenOkResponseDto } from './dto/auth-token-ok-response.dto';
 import { RefreshTokenOkResponseDto } from './dto/refresh-token-ok-response.dto';
 import { RedisService } from 'src/redis/redis.service';
+import { BlacklistDto } from './dto/blacklist.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -47,11 +48,10 @@ export class AuthController {
     return this.authService.refreshAccessToken(refreshTokenDto.refresh_token);
   }
 
+  @Post('blacklist')
   @ApiTags('Auth')
   @HttpCode(200)
-  @Post('blacklist')
-  async blacklistToken(@Body('token') token: string) {
-    await this.redisService.addToBlacklist(token);
-    return { status: 'success', message: 'Token blacklisted successfully' };
+  async blacklistToken(@Body() blacklistDto: BlacklistDto) {
+    return this.authService.addToBlackList(blacklistDto);
   }
 }
