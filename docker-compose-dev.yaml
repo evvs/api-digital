@@ -31,15 +31,3 @@ services:
     env_file: 
     - .env
 
-  core-api:
-    build: 
-      context: ./services/core/
-      dockerfile: Dockerfile
-    image: core-api
-    env_file:
-      - ./services/core/.env
-    ports:
-      - "3000:3000"
-    depends_on:
-      - redis
-      - postgres
