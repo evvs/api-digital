@@ -35,7 +35,7 @@ services:
     build: 
       context: ./services/core/
       dockerfile: Dockerfile
-    image: core-api
+    image: core-api:1.0.0
     env_file:
       - ./services/core/.env
     ports:
